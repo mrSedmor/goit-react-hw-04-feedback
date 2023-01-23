@@ -3,9 +3,9 @@ import { ButtonList, Button } from './FeadbackOptions.styled';
 
 const FeadbackOptions = ({ options, onLeaveFeedback }) => (
   <ButtonList>
-    {options.map((option, index) => (
+    {options.map(option => (
       <li key={option}>
-        <Button type="button" onClick={() => onLeaveFeedback(index)}>
+        <Button type="button" onClick={() => onLeaveFeedback(option)}>
           {option}
         </Button>
       </li>

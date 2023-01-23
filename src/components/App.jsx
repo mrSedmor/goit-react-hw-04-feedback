@@ -1,14 +1,8 @@
 import { Component } from 'react';
-import { Statistics, FeadbackOptions, Section } from 'components';
+import { Statistics, FeadbackOptions, Section, Notification } from 'components';
 
 export class App extends Component {
-  static FEEDBACK_OPTIONS = {
-    labels: ['Good', 'Neutral', 'Bad'],
-    keys: ['good', 'neutral', 'bad'],
-  };
-
   state = {
-    // ...Object.fromEntries(App.FEEDBACK_OPTIONS.keys.map(key => [key, 0])),
     good: 0,
     neutral: 0,
     bad: 0,
@@ -21,16 +15,15 @@ export class App extends Component {
 
   countPositiveFeedbackPercentage = () => {
     const total = this.countTotalFeedback();
-    return total > 0 ? Math.round((1000 * this.state.good) / total) / 10 : 0;
+    return total > 0 ? Math.round((100 * this.state.good) / total) : 0;
   };
 
-  handleLeaveFeadback = optionIndex => {
-    const feedback = App.FEEDBACK_OPTIONS.keys[optionIndex];
-    this.setState(prevState => ({ [feedback]: prevState[feedback] + 1 }));
+  handleLeaveFeadback = option => {
+    this.setState(prevState => ({ [option]: prevState[option] + 1 }));
   };
 
   render() {
-    const options = App.FEEDBACK_OPTIONS.labels;
+    const options = Object.keys(this.state);
 
     const { good, neutral, bad } = this.state;
     const total = this.countTotalFeedback();
@@ -47,7 +40,11 @@ export class App extends Component {
         </Section>
 
         <Section title="Statistics">
-          <Statistics {...statistics} />
+          {total > 0 ? (
+            <Statistics {...statistics} />
+          ) : (
+            <Notification message="There is no feedback" />
+          )}
         </Section>
       </>
     );

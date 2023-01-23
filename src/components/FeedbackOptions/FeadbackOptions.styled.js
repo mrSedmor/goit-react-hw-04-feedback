@@ -8,6 +8,7 @@ export const Button = styled.button`
   font-size: 16px;
   line-height: 1.3;
   text-align: center;
+  text-transform: capitalize;
 
   border: none;
   background: #f4f4f4;
