@@ -1,19 +1,18 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Statistics, FeadbackOptions, Section, Notification } from 'components';
 
 export const App = () => {
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-  const setters = {
-    good: setGood,
-    neutral: setNeutral,
-    bad: setBad,
-  };
-  const handleLeaveFeadback = option => {
-    setters[option](prevState => prevState + 1);
-  };
-  const options = Object.keys(setters);
+  const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
+
+  const handleLeaveFeadback = useCallback(option => {
+    setFeedback(prevFeedback => ({
+      ...prevFeedback,
+      [option]: prevFeedback[option] + 1,
+    }));
+  }, []);
+
+  const options = Object.keys(feedback);
+  const { good, neutral, bad } = feedback;
   const total = bad + neutral + good;
   const positivePercentage = total > 0 ? Math.round((100 * good) / total) : 0;
   const statistics = { good, neutral, bad, total, positivePercentage };
